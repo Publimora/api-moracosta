@@ -70,7 +70,13 @@ export const signinHandler = async (req, res) => {
     };
 
     res
-      .cookie("token", token, { maxAge: 24 * 3600000, httpOnly: false, secure: true, sameSite: "none", proxy: true })
+      .cookie("token", token, {
+        maxAge: 24 * 3600000,
+        httpOnly: false,
+        secure: true,
+        sameSite: "none",
+        proxy: true,
+      })
       .json(user);
   } catch (error) {
     console.log(error);
@@ -81,7 +87,10 @@ export const signoutHandler = async (req, res) => {
   try {
     res.cookie("token", null, {
       expires: new Date(Date.now()),
-      httpOnly: true,
+      httpOnly: false,
+      secure: true,
+      sameSite: "none",
+      proxy: true,
     });
 
     res.status(200).json({
