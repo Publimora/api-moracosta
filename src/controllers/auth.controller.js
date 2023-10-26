@@ -70,12 +70,7 @@ export const signinHandler = async (req, res) => {
     };
 
     res
-      .cookie("token", token, {
-        maxAge: 24 * 3600000,
-        httpOnly: true,
-        sameSite: "none",
-        proxy: true,
-      })
+      .cookie("token", token, { maxAge: 24 * 3600000, httpOnly: false, secure: true, sameSite: "none", proxy: true })
       .json(user);
   } catch (error) {
     console.log(error);
