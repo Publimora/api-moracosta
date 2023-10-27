@@ -7,6 +7,7 @@ const roleSchema = new mongoose.Schema(
     name: String,
   },
   {
+    timestamps: true,
     versionKey: false,
   }
 );
