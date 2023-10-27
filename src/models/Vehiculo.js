@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const vehiculoSchema = new mongoose.Schema(
   {
-    modelo_id: {
+    modelo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Modelo",
     },

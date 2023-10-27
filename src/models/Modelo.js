@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const modeloSchema = new mongoose.Schema(
   {
+    marca: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Marca",
+    },
     nombre: {
       type: String,
       required: true,
