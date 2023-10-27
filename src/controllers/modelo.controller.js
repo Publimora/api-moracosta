@@ -17,7 +17,12 @@ export const crearModelo = async (req, res) => {
     });
 
     const modeloGuardado = await nuevoModelo.save();
-    res.status(201).json(modeloGuardado);
+
+    const resModelo = await Modelo.findById(modeloGuardado._id).populate(
+      "marca"
+    );
+
+    res.status(201).json(resModelo);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
