@@ -1,9 +1,67 @@
 import Vehiculo from "../models/Vehiculo.js";
+import {
+  deleteImage,
+  deleteVideo,
+  uploadImage,
+  uploadVideo,
+} from "../utils/cloudinary.js";
 
 // Crear un vehículo
 export const createVehiculo = async (req, res) => {
   try {
-    const vehiculo = new Vehiculo(req.body);
+    let reqvehiculo = req.body;
+
+    const imagen_principal = reqvehiculo.imagen_principal;
+    const imagen1 = reqvehiculo.detalles.imagen1;
+    const imagen2 = reqvehiculo.detalles.imagen2;
+    const imagen_especificaciones = reqvehiculo.imagen_especificaciones;
+    const video_banner = reqvehiculo.video_banner;
+
+    const upload_imagen_principal = await uploadImage(
+      reqvehiculo.nombre,
+      imagen_principal
+    );
+
+    const upload_imagen1 = await uploadImage(reqvehiculo.nombre, imagen1);
+
+    const upload_imagen2 = await uploadImage(reqvehiculo.nombre, imagen2);
+
+    const upload_imagen_especificaciones = await uploadImage(
+      reqvehiculo.nombre,
+      imagen_especificaciones
+    );
+
+    const upload_video_banner = await uploadVideo(
+      reqvehiculo.nombre,
+      video_banner
+    );
+
+    reqvehiculo.imagen_principal = {
+      public_id: upload_imagen_principal.public_id,
+      url: upload_imagen_principal.url,
+    };
+
+    reqvehiculo.detalles.imagen1 = {
+      public_id: upload_imagen1.public_id,
+      url: upload_imagen1.url,
+    };
+
+    reqvehiculo.detalles.imagen2 = {
+      public_id: upload_imagen2.public_id,
+      url: upload_imagen2.url,
+    };
+
+    reqvehiculo.imagen_especificaciones = {
+      public_id: upload_imagen_especificaciones.public_id,
+      url: upload_imagen_especificaciones.url,
+    };
+
+    reqvehiculo.video_banner = {
+      public_id: upload_video_banner.public_id,
+      url: upload_video_banner.url,
+    };
+
+    const vehiculo = new Vehiculo(reqvehiculo);
     const savedVehiculo = await vehiculo.save();
 
     const resVehiculo = await Vehiculo.findById(savedVehiculo._id).populate({
@@ -82,8 +140,19 @@ export const deleteVehiculo = async (req, res) => {
     if (!vehiculo) {
       return res.status(404).json({ error: "Vehículo no encontrado" });
     }
-    res.json({ message: "Vehículo eliminado correctamente" });
+
+    deleteImage(vehiculo.imagen_principal.public_id);
+    deleteImage(vehiculo.detalles.imagen1.public_id);
+    deleteImage(vehiculo.detalles.imagen2.public_id);
+    deleteImage(vehiculo.imagen_especificaciones.public_id);
+    deleteVideo(vehiculo.video_banner.public_id);
+
+    res.json({
+      _id: vehiculo._id,
+      message: "Vehículo eliminado correctamente",
+    });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 };

@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
 
 // Routes
 import indexRoutes from "./routes/index.routes.js";
@@ -32,8 +33,14 @@ app.use(cors(corsOptions));
 
 app.use(helmet());
 app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "200mb" }));
+app.use(express.urlencoded({ extended: true, limit: "200mb" }));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./uploads",
+  })
+);
 
 // Routes
 app.use("/api", indexRoutes);

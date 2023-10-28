@@ -12,7 +12,10 @@ const vehiculoSchema = new mongoose.Schema(
       required: true,
     },
     descripcion: String,
-    imagen_principal: String,
+    imagen_principal: {
+      public_id: String,
+      url: String,
+    },
     precio: {
       type: Number,
       default: 0,
@@ -20,7 +23,10 @@ const vehiculoSchema = new mongoose.Schema(
 
     //detalles del vehiculo
     ficha_tecnica: String,
-    video_banner: String,
+    video_banner: {
+      public_id: String,
+      url: String,
+    },
     detalles_banner: {
       one: String,
       two: String,
@@ -29,12 +35,21 @@ const vehiculoSchema = new mongoose.Schema(
     detalles: {
       titulo1: String,
       texto1: String,
-      imagen1: String,
+      imagen1: {
+        public_id: String,
+        url: String,
+      },
       titulo2: String,
       texto2: String,
-      imagen2: String,
+      imagen2: {
+        public_id: String,
+        url: String,
+      },
     },
-    imagen_especificaciones: String,
+    imagen_especificaciones: {
+      public_id: String,
+      url: String,
+    },
     especificaciones: {
       potencia: {
         potencia_motor: String,
