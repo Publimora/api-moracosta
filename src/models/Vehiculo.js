@@ -9,7 +9,6 @@ const vehiculoSchema = new mongoose.Schema(
     nombre: {
       type: String,
       required: true,
-      trim: true,
     },
     descripcion: String,
     imagen_principal: String,

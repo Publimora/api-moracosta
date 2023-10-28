@@ -6,9 +6,12 @@ export const createVehiculo = async (req, res) => {
     const vehiculo = new Vehiculo(req.body);
     const savedVehiculo = await vehiculo.save();
 
-    const resVehiculo = await Vehiculo.findById(savedVehiculo._id).populate(
-      "modelo"
-    );
+    const resVehiculo = await Vehiculo.findById(savedVehiculo._id).populate({
+      path: "modelo",
+      populate: {
+        path: "marca",
+      },
+    });
 
     res.status(201).json(resVehiculo);
   } catch (err) {
@@ -19,7 +22,12 @@ export const createVehiculo = async (req, res) => {
 // Obtener todos los vehículos
 export const getVehiculos = async (req, res) => {
   try {
-    const vehiculos = await Vehiculo.find().populate("modelo");
+    const vehiculos = await Vehiculo.find().populate({
+      path: "modelo",
+      populate: {
+        path: "marca",
+      },
+    });
     res.json(vehiculos);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -29,7 +37,12 @@ export const getVehiculos = async (req, res) => {
 // Obtener un vehículo por ID
 export const getVehiculoById = async (req, res) => {
   try {
-    const vehiculo = await Vehiculo.findById(req.params.id).populate("modelo");
+    const vehiculo = await Vehiculo.findById(req.params.id).populate({
+      path: "modelo",
+      populate: {
+        path: "marca",
+      },
+    });
     if (!vehiculo) {
       return res.status(404).json({ error: "Vehículo no encontrado" });
     }
@@ -49,9 +62,12 @@ export const updateVehiculo = async (req, res) => {
       return res.status(404).json({ error: "Vehículo no encontrado" });
     }
 
-    const resVehiculo = await Vehiculo.findById(vehiculo._id).populate(
-      "modelo"
-    );
+    const resVehiculo = await Vehiculo.findById(vehiculo._id).populate({
+      path: "modelo",
+      populate: {
+        path: "marca",
+      },
+    });
 
     res.json(resVehiculo);
   } catch (err) {
