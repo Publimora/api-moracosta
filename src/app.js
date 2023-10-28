@@ -10,6 +10,7 @@ import modelosRoutes from "./routes/modelo.routes.js";
 import usersRoutes from "./routes/user.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import marcaRoutes from "./routes/marca.routes.js";
+import vehiculosRoutes from "./routes/vehiculo.routes.js";
 
 const app = express();
 app.use(cookieParser());
@@ -40,5 +41,6 @@ app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/modelos", modelosRoutes);
 app.use("/api/marcas", marcaRoutes);
+app.use("/api/vehiculos", vehiculosRoutes);
 
 export default app;
