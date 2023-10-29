@@ -11,6 +11,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    ciudad: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -34,8 +38,8 @@ productSchema.statics.encryptPassword = async (password) => {
 };
 
 productSchema.statics.comparePassword = async (password, receivedPassword) => {
-  return await bcrypt.compare(password, receivedPassword)
-}
+  return await bcrypt.compare(password, receivedPassword);
+};
 
 productSchema.pre("save", async function (next) {
   const user = this;
@@ -45,6 +49,6 @@ productSchema.pre("save", async function (next) {
   const hash = await bcrypt.hash(user.password, 10);
   user.password = hash;
   next();
-})
+});
 
 export default mongoose.model("User", productSchema);

@@ -65,6 +65,7 @@ export const signinHandler = async (req, res) => {
       id: userFound._id,
       username: userFound.username,
       email: userFound.email,
+      ciudad: userFound.ciudad,
       roles: userFound.roles,
       createdAt: userFound.createdAt,
     };
