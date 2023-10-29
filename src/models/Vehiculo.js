@@ -2,23 +2,31 @@ import mongoose from "mongoose";
 
 const vehiculoSchema = new mongoose.Schema(
   {
-    modelo_id: {
+    //informacion principal
+    modelo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Modelo",
     },
     nombre: {
       type: String,
       required: true,
-      trim: true,
     },
     descripcion: String,
-    imagen_principal: String,
+    imagen_principal: {
+      public_id: String,
+      url: String,
+    },
     precio: {
       type: Number,
       default: 0,
     },
+
+    //detalles del vehiculo
     ficha_tecnica: String,
-    video_banner: String,
+    video_banner: {
+      public_id: String,
+      url: String,
+    },
     detalles_banner: {
       one: String,
       two: String,
@@ -27,25 +35,69 @@ const vehiculoSchema = new mongoose.Schema(
     detalles: {
       titulo1: String,
       texto1: String,
-      imagen1: String,
+      imagen1: {
+        public_id: String,
+        url: String,
+      },
       titulo2: String,
       texto2: String,
-      imagen2: String,
+      imagen2: {
+        public_id: String,
+        url: String,
+      },
     },
-    imagen_especificaciones: String,
+    imagen_especificaciones: {
+      public_id: String,
+      url: String,
+    },
     especificaciones: {
       potencia: {
         potencia_motor: String,
         torque: String,
+        velocidad_maxima: String,
+        aceleracion_0_100: String,
       },
       seguridad: {
         Airbags: Number,
         Frenos_Antibloqueo_ABC: String,
+        Control_traccion: String,
+        Control_estabilidad: String,
+        Sistema_retencion_infantil: String,
       },
       equipamiento: {
         Sistema_navegacion: String,
+        Sistema_sonido_premium: String,
+        Asiento_cuero: String,
         Techo_solar: String,
+        Conectividad_bluetooth: String,
       },
+    },
+    //banner de la pagina principal
+    caracteristicas: {
+      one: {
+        titulo: String,
+        subtitulo: String,
+      },
+      two: {
+        titulo: String,
+        subtitulo: String,
+      },
+      tree: {
+        titulo: String,
+        subtitulo: String,
+      },
+      four: {
+        titulo: String,
+        subtitulo: String,
+      },
+    },
+    isDestacado: {
+      type: Boolean,
+      default: false,
+    },
+    isBanner: {
+      type: Boolean,
+      default: false,
     },
   },
   {
