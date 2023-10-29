@@ -38,27 +38,27 @@ export const createVehiculo = async (req, res) => {
 
     reqvehiculo.imagen_principal = {
       public_id: upload_imagen_principal.public_id,
-      url: upload_imagen_principal.url,
+      url: upload_imagen_principal.secure_url,
     };
 
     reqvehiculo.detalles.imagen1 = {
       public_id: upload_imagen1.public_id,
-      url: upload_imagen1.url,
+      url: upload_imagen1.secure_url,
     };
 
     reqvehiculo.detalles.imagen2 = {
       public_id: upload_imagen2.public_id,
-      url: upload_imagen2.url,
+      url: upload_imagen2.secure_url,
     };
 
     reqvehiculo.imagen_especificaciones = {
       public_id: upload_imagen_especificaciones.public_id,
-      url: upload_imagen_especificaciones.url,
+      url: upload_imagen_especificaciones.secure_url,
     };
 
     reqvehiculo.video_banner = {
       public_id: upload_video_banner.public_id,
-      url: upload_video_banner.url,
+      url: upload_video_banner.secure_url,
     };
 
     const vehiculo = new Vehiculo(reqvehiculo);
