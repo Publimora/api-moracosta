@@ -34,9 +34,19 @@ export const obtenerContactos = async (req, res) => {
 // Operación CRUD: Obtener un contacto por su ID
 export const obtenerContactoPorId = async (req, res) => {
   try {
-    const contacto = await Contacto.findById(req.params.id).populate("user", {
-      password: 0,
-    });
+    const contacto = await Contacto.findById(req.params.id)
+      .populate("user", {
+        password: 0,
+      })
+      .populate({
+        path: "modelo",
+        populate: {
+          path: "modelo",
+          populate: {
+            path: "marca",
+          },
+        },
+      });
 
     if (!contacto) {
       return res.status(404).json({ mensaje: "Contacto no encontrado" });
@@ -69,7 +79,10 @@ export const eliminarContacto = async (req, res) => {
     if (!contacto) {
       return res.status(404).json({ mensaje: "Contacto no encontrado" });
     }
-    res.status(204).json();
+
+    console.log(contacto);
+
+    res.json({ _id: contacto._id, mensaje: "Contacto eliminado" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -92,9 +105,19 @@ export const setAtendido = async (req, res) => {
       return res.status(404).json({ mensaje: "Contacto no encontrado" });
     }
 
-    const rescontacto = await Contacto.findById(contacto._id).populate("user", {
-      password: 0,
-    });
+    const rescontacto = await Contacto.findById(contacto._id)
+      .populate("user", {
+        password: 0,
+      })
+      .populate({
+        path: "modelo",
+        populate: {
+          path: "modelo",
+          populate: {
+            path: "marca",
+          },
+        },
+      });
 
     res.status(200).json(rescontacto);
   } catch (error) {

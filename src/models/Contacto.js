@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const contactoSchema = new mongoose.Schema({
-  modelo: { type: mongoose.Schema.Types.ObjectId, ref: "Modelo" },
+  modelo: { type: mongoose.Schema.Types.ObjectId, ref: "Vehiculo" },
   nombre: String,
   apellido: String,
   tipoDocumento: String,
