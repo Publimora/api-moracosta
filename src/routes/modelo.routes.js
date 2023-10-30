@@ -10,12 +10,12 @@ import { isAdmin, isModerator, verifyToken } from "../middlewares/authJwt.js";
 
 const router = Router();
 
-router.post("/", [verifyToken, isModerator], crearModelo);
+router.post("/", [verifyToken, isAdmin, isModerator], crearModelo);
 
 router.get("/", obtenerModelos);
 
 router.get("/:id", obtenerModeloPorId);
 
-router.delete("/:id", [verifyToken, isAdmin], eliminarModelo);
+router.delete("/:id", [verifyToken, isAdmin, isModerator], eliminarModelo);
 
 export default router;
