@@ -3,10 +3,10 @@ import Role from "../models/Role.js";
 
 export const createUser = async (req, res) => {
   try {
-    let { username, email, password, roles } = req.body;
+    let { username, email, ciudad, password, roles } = req.body;
 
     if (!roles || roles.length === 0) {
-      roles = ["moderator"];
+      roles = ["asesor"];
     }
 
     const rolesFound = await Role.find({ name: { $in: roles } });
@@ -15,6 +15,7 @@ export const createUser = async (req, res) => {
     const user = new User({
       username,
       email,
+      ciudad,
       password,
       roles: rolesFound.map((role) => role._id),
     });
@@ -28,6 +29,7 @@ export const createUser = async (req, res) => {
       _id: resuser._id,
       username: resuser.username,
       email: resuser.email,
+      ciudad: resuser.ciudad,
       roles: resuser.roles,
       createdAt: resuser.createdAt,
     });
@@ -43,6 +45,7 @@ export const getAuthUser = async (req, res) => {
     _id: user._id,
     username: user.username,
     email: user.email,
+    ciudad: user.ciudad,
     roles: user.roles,
     createdAt: user.createdAt,
   });

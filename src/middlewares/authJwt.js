@@ -55,3 +55,22 @@ export const isAdmin = async (req, res, next) => {
     return res.status(500).send({ message: error });
   }
 };
+
+export const isAsesor = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    for (let i = 0; i < roles.length; i++) {
+      if (roles[i].name === "asesor") {
+        next();
+        return;
+      }
+    }
+
+    return res.status(403).json({ message: "Require Asesor Role!" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+};
