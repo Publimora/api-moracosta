@@ -23,7 +23,7 @@ app.set("json spaces", 4);
 
 // Middlewares
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://moracosta.netlify.app"],
+  origin: ["https://web-moracosta.vercel.app", "https://moracosta.netlify.app"],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
