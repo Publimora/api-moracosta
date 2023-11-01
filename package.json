@@ -2,11 +2,11 @@
   "name": "moracosta-api",
   "version": "0.0.2",
   "description": "Moracosta REST API with authentication and authorization",
-  "main": "src/index.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js --host",
-    "start": "node src/index.js",
+    "dev": "nodemon index.js --host",
+    "start": "node index.js",
     "test": "jest"
   },
   "repository": {
