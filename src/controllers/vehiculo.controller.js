@@ -73,6 +73,7 @@ export const createVehiculo = async (req, res) => {
 
     res.status(201).json(resVehiculo);
   } catch (err) {
+    console.log(err);
     res.status(400).json({ error: err.message });
   }
 };
