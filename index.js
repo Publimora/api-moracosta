@@ -10,3 +10,5 @@ server.timeout = 600000; // 10 minutos
 
 server.listen(PORT);
 console.log("Server on port", app.get("port"));
+
+export default server;
