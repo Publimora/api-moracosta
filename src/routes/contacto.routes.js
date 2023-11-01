@@ -18,9 +18,17 @@ import {
 const router = Router();
 
 // Rutas para el CRUD de contactos
-router.post("/", [verifyToken, isAdmin, isModerator, isAsesor], crearContacto);
-router.get("/", obtenerContactos);
-router.get("/:id", obtenerContactoPorId);
+router.post("/", crearContacto);
+router.get(
+  "/",
+  [verifyToken, isAdmin, isModerator, isAsesor],
+  obtenerContactos
+);
+router.get(
+  "/:id",
+  [verifyToken, isAdmin, isModerator, isAsesor],
+  obtenerContactoPorId
+);
 router.put(
   "/:id",
   [verifyToken, isAdmin, isModerator, isAsesor],
