@@ -4,6 +4,7 @@ import {
   deleteUser,
   getAuthUser,
   getUsers,
+  updatePassword,
 } from "../controllers/user.controller.js";
 import { isAdmin, verifyToken } from "../middlewares/authJwt.js";
 import {
@@ -21,5 +22,6 @@ router.post(
 );
 router.get("/", [verifyToken, isAdmin], getUsers);
 router.delete("/:userId", [verifyToken, isAdmin], deleteUser);
+router.put("/:userId", [verifyToken, isAdmin], updatePassword);
 
 export default router;
