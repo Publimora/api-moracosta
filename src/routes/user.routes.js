@@ -17,7 +17,7 @@ const router = Router();
 router.get("/yo", [verifyToken], getAuthUser);
 router.post(
   "/",
-  [verifyToken, isAdmin, checkExistingUser, checkExistingRole],
+  [verifyToken, isAdmin],
   createUser
 );
 router.get("/", [verifyToken, isAdmin], getUsers);
