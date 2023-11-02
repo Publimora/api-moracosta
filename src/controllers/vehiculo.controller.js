@@ -113,7 +113,6 @@ export const getVehiculoById = async (req, res) => {
 
 // Actualizar un vehículo por ID
 export const updateVehiculo = async (req, res) => {
-  
   try {
     const vehiculo = await Vehiculo.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -158,3 +157,58 @@ export const deleteVehiculo = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Actualizar la propiedad isBanner de un vehículo
+export const updateIsBanner = async (req, res) => {
+  try {
+    // Obtiene el vehículo actual con isBanner en true
+    const isBanner = req.body.isBanner;
+    const vehiculoActual = await Vehiculo.findOne({ isBanner: true });
+
+    if (vehiculoActual) {
+      vehiculoActual.isBanner = false;
+      await vehiculoActual.save();
+    }
+
+    const vehiculo = await Vehiculo.findByIdAndUpdate(
+      req.params.id,
+      { isBanner: isBanner },
+      { new: true }
+    );
+
+    if (!vehiculo) {
+      return res.status(404).json({ error: "Vehículo no encontrado" });
+    }
+
+    res.json({ vehiculo: vehiculo, anterior: vehiculoActual });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Actualizar la propiedad isDestacado de un vehículo por ID
+export const updateDestacado = async (req, res) => {
+  try {
+    const vehiculo = await Vehiculo.findByIdAndUpdate(
+      req.params.id,
+      { isDestacado: req.body.isDestacado },
+      { new: true }
+    );
+
+    if (!vehiculo) {
+      return res.status(404).json({ error: "Vehículo no encontrado" });
+    }
+
+    const resVehiculo = await Vehiculo.findById(vehiculo._id).populate({
+      path: "modelo",
+      populate: {
+        path: "marca",
+      },
+    });
+
+    res.json(resVehiculo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
