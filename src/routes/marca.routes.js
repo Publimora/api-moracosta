@@ -16,6 +16,6 @@ router.get("/", obtenerMarcas);
 
 router.get("/:id", obtenerMarcaPorId);
 
-router.delete("/:id", [verifyToken, isAdmin, isModerator], eliminarMarca);
+router.delete("/:id", [verifyToken, isAdmin], eliminarMarca);
 
 export default router;

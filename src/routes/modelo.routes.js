@@ -16,6 +16,6 @@ router.get("/", obtenerModelos);
 
 router.get("/:id", obtenerModeloPorId);
 
-router.delete("/:id", [verifyToken, isAdmin, isModerator], eliminarModelo);
+router.delete("/:id", [verifyToken, isAdmin], eliminarModelo);
 
 export default router;
