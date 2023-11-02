@@ -74,3 +74,62 @@ export const isAsesor = async (req, res, next) => {
     return res.status(500).send({ message: error });
   }
 };
+
+export const isAdminOrModerator = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    // Verificar si el usuario es administrador o moderador
+    if (roles.some((role) => ["admin", "moderator"].includes(role.name))) {
+      next(); // Permitir acceso si es admin o moderador
+    } else {
+      return res
+        .status(403)
+        .json({ message: "Require Admin or Moderator Role!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+};
+
+// authJwt.js
+export const isAdminOrAsesor = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    // Verificar si el usuario es administrador o asesor
+    if (roles.some((role) => ["admin", "asesor"].includes(role.name))) {
+      next(); // Permitir acceso si es admin o asesor
+    } else {
+      return res.status(403).json({ message: "Require Admin or Asesor Role!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+};
+
+// authJwt.js
+export const isAdminOrModeratorOrAsesor = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    // Verificar si el usuario es administrador, moderador o asesor
+    if (
+      roles.some((role) => ["admin", "moderator", "asesor"].includes(role.name))
+    ) {
+      next(); // Permitir acceso si es admin, moderador o asesor
+    } else {
+      return res
+        .status(403)
+        .json({ message: "Require Admin, Moderator, or Asesor Role!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+};

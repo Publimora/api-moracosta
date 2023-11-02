@@ -7,18 +7,18 @@ import {
   updateVehiculo,
 } from "../controllers/vehiculo.controller.js";
 
-import { isAdmin, isModerator, verifyToken } from "../middlewares/authJwt.js";
+import { isAdminOrModerator, verifyToken } from "../middlewares/authJwt.js";
 
 const router = Router();
 
-router.post("/", [verifyToken, isAdmin, isModerator], createVehiculo);
+router.post("/", [verifyToken, isAdminOrModerator], createVehiculo);
 
-router.put("/:id", [verifyToken, isAdmin, isModerator], updateVehiculo);
+router.put("/:id", [verifyToken, isAdminOrModerator], updateVehiculo);
 
 router.get("/", getVehiculos);
 
 router.get("/:id", getVehiculoById);
 
-router.delete("/:id", [verifyToken, isAdmin, isModerator], deleteVehiculo);
+router.delete("/:id", [verifyToken, isAdminOrModerator], deleteVehiculo);
 
 export default router;
