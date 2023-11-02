@@ -6,11 +6,11 @@ import {
   eliminarMarca,
 } from "../controllers/marca.controller.js";
 
-import { isAdmin, isModerator, verifyToken } from "../middlewares/authJwt.js";
+import { isAdmin, isAdminOrModerator, verifyToken } from "../middlewares/authJwt.js";
 
 const router = Router();
 
-router.post("/", [verifyToken, isAdmin, isModerator], crearMarca);
+router.post("/", [verifyToken, isAdminOrModerator], crearMarca);
 
 router.get("/", obtenerMarcas);
 

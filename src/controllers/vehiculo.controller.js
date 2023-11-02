@@ -113,6 +113,7 @@ export const getVehiculoById = async (req, res) => {
 
 // Actualizar un vehículo por ID
 export const updateVehiculo = async (req, res) => {
+  
   try {
     const vehiculo = await Vehiculo.findByIdAndUpdate(req.params.id, req.body, {
       new: true,

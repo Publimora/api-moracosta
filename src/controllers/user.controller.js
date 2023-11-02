@@ -75,3 +75,25 @@ export const deleteUser = async (req, res) => {
     message: "User was deleted successfully!",
   });
 };
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Cambiar la contraseña y guardar el usuario
+    user.password = password;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

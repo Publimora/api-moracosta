@@ -6,11 +6,11 @@ import {
   eliminarModelo,
 } from "../controllers/modelo.controller.js";
 
-import { isAdmin, isModerator, verifyToken } from "../middlewares/authJwt.js";
+import { isAdmin, isAdminOrModerator, verifyToken } from "../middlewares/authJwt.js";
 
 const router = Router();
 
-router.post("/", [verifyToken, isAdmin, isModerator], crearModelo);
+router.post("/", [verifyToken, isAdminOrModerator], crearModelo);
 
 router.get("/", obtenerModelos);
 

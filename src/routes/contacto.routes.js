@@ -10,8 +10,7 @@ import {
 } from "../controllers/contacto.controller.js";
 import {
   isAdmin,
-  isAsesor,
-  isModerator,
+  isAdminOrAsesor,
   verifyToken,
 } from "../middlewares/authJwt.js";
 
@@ -19,32 +18,12 @@ const router = Router();
 
 // Rutas para el CRUD de contactos
 router.post("/", crearContacto);
-router.get(
-  "/",
-  [verifyToken, isAdmin, isModerator, isAsesor],
-  obtenerContactos
-);
-router.get(
-  "/:id",
-  [verifyToken, isAdmin, isModerator, isAsesor],
-  obtenerContactoPorId
-);
-router.put(
-  "/:id",
-  [verifyToken, isAdmin, isModerator, isAsesor],
-  actualizarContacto
-);
-router.delete(
-  "/:id",
-  [verifyToken, isAdmin, isModerator, isAsesor],
-  eliminarContacto
-);
+router.get("/", [verifyToken, isAdminOrAsesor], obtenerContactos);
+router.get("/:id", [verifyToken, isAdminOrAsesor], obtenerContactoPorId);
+router.put("/:id", [verifyToken, isAdminOrAsesor], actualizarContacto);
+router.delete("/:id", [verifyToken, isAdmin], eliminarContacto);
 
 // Ruta para actualizar el campo isAtendido
-router.put(
-  "/setAtendido/:id",
-  [verifyToken, isAdmin, isModerator, isAsesor],
-  setAtendido
-);
+router.put("/setAtendido/:id", [verifyToken, isAdminOrAsesor], setAtendido);
 
 export default router;
