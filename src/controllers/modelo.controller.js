@@ -6,12 +6,28 @@ export const crearModelo = async (req, res) => {
   try {
     const { marcaId, nombre } = req.body;
 
+    // Verificar si la marca a la que se hace referencia existe
     const marcaFound = await Marca.findById(marcaId);
 
     if (!marcaFound) {
       return res.status(400).json({ error: "Esta marca no existe" });
     }
 
+    // Verificar si ya existe un modelo con el mismo nombre
+    const modeloExistente = await Modelo.findOne({
+      nombre,
+      marca: marcaFound._id,
+    });
+
+    if (modeloExistente) {
+      return res
+        .status(400)
+        .json({
+          error: "Ya existe un modelo con este nombre para esta marca.",
+        });
+    }
+
+    // Si la marca existe y no existe un modelo con el mismo nombre, crear y guardar el nuevo modelo
     const nuevoModelo = new Modelo({
       marca: marcaFound._id,
       nombre,

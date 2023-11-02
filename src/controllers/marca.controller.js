@@ -4,9 +4,23 @@ import Vehiculo from "../models/Vehiculo.js";
 // Controlador para crear un nuevo registro
 export const crearMarca = async (req, res) => {
   try {
-    const nuevoMarca = new Marca(req.body);
-    const marcaGuardado = await nuevoMarca.save();
-    res.status(201).json(marcaGuardado);
+    // Verificar si ya existe una marca con el mismo nombre
+    const nombreMarcaExistente = await Marca.findOne({
+      nombre: req.body.nombre,
+    });
+
+    if (nombreMarcaExistente) {
+      // Si ya existe una marca con el mismo nombre, devolver un error
+      return res
+        .status(400)
+        .json({ error: "Ya existe una marca con este nombre." });
+    }
+
+    // Si no existe una marca con el mismo nombre, crear y guardar la nueva marca
+    const nuevaMarca = new Marca(req.body);
+    const marcaGuardada = await nuevaMarca.save();
+
+    res.status(201).json(marcaGuardada);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
