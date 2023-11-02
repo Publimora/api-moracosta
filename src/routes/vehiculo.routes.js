@@ -5,9 +5,15 @@ import {
   deleteVehiculo,
   getVehiculoById,
   updateVehiculo,
+  updateDestacado,
+  updateIsBanner,
 } from "../controllers/vehiculo.controller.js";
 
-import { isAdminOrModerator, verifyToken } from "../middlewares/authJwt.js";
+import {
+  isAdmin,
+  isAdminOrModerator,
+  verifyToken,
+} from "../middlewares/authJwt.js";
 
 const router = Router();
 
@@ -20,5 +26,9 @@ router.get("/", getVehiculos);
 router.get("/:id", getVehiculoById);
 
 router.delete("/:id", [verifyToken, isAdminOrModerator], deleteVehiculo);
+
+router.put("/isDestacado/:id", [verifyToken, isAdmin], updateDestacado);
+
+router.put("/isBanner/:id", [verifyToken, isAdmin], updateIsBanner);
 
 export default router;
