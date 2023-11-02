@@ -62,8 +62,8 @@ export const eliminarMarca = async (req, res) => {
 
     res.json({
       _id: marca._id,
-      modelos: resIdModelos,
-      vehiculos: resIdVehiculos,
+      modelosEliminados: resIdModelos,
+      vehiculosEliminados: resIdVehiculos,
       mensaje:
         "Marca y sus modelos y vehículos asociados eliminados exitosamente",
     });

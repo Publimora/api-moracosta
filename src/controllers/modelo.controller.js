@@ -1,5 +1,6 @@
 import Modelo from "../models/Modelo.js";
 import Marca from "../models/Marca.js";
+import Vehiculo from "../models/Vehiculo.js";
 // Controlador para crear un nuevo registro
 export const crearModelo = async (req, res) => {
   try {
@@ -54,11 +55,28 @@ export const obtenerModeloPorId = async (req, res) => {
 // Controlador para eliminar un registro por su ID
 export const eliminarModelo = async (req, res) => {
   try {
-    const modelo = await Modelo.findByIdAndRemove(req.params.id);
+    const modelo = await Modelo.findById(req.params.id);
     if (!modelo) {
       return res.status(404).json({ error: "Modelo no encontrado" });
     }
-    res.json({ _id: modelo._id, mensaje: "Modelo eliminado exitosamente" });
+
+    // Encuentra y recopila los IDs de los vehículos asociados al modelo
+    const vehiculos = await Vehiculo.find({ modelo: modelo._id });
+    const vehiculosIDs = vehiculos.map((vehiculo) => vehiculo._id);
+
+    // Elimina los vehículos asociados al modelo
+    for (const vehiculo of vehiculos) {
+      await Vehiculo.findByIdAndRemove(vehiculo._id);
+    }
+
+    // Finalmente, elimina el modelo
+    await Modelo.findByIdAndRemove(req.params.id);
+
+    res.json({
+      _id: modelo._id,
+      vehiculosEliminados: vehiculosIDs,
+      mensaje: "Modelo y sus vehículos asociados eliminados exitosamente",
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
