@@ -10,7 +10,7 @@ export const crearModelo = async (req, res) => {
     const marcaFound = await Marca.findById(marcaId);
 
     if (!marcaFound) {
-      return res.status(400).json({ error: "Esta marca no existe" });
+      return res.status(400).json({ message: "Esta marca no existe" });
     }
 
     // Verificar si ya existe un modelo con el mismo nombre
@@ -20,11 +20,9 @@ export const crearModelo = async (req, res) => {
     });
 
     if (modeloExistente) {
-      return res
-        .status(400)
-        .json({
-          error: "Ya existe un modelo con este nombre para esta marca.",
-        });
+      return res.status(400).json({
+        message: "Ya existe un modelo con este nombre para esta marca.",
+      });
     }
 
     // Si la marca existe y no existe un modelo con el mismo nombre, crear y guardar el nuevo modelo
@@ -41,7 +39,7 @@ export const crearModelo = async (req, res) => {
 
     res.status(201).json(resModelo);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
