@@ -114,21 +114,97 @@ export const getVehiculoById = async (req, res) => {
 // Actualizar un vehículo por ID
 export const updateVehiculo = async (req, res) => {
   try {
-    const vehiculo = await Vehiculo.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const vehiculo = await Vehiculo.findById(req.params.id);
     if (!vehiculo) {
       return res.status(404).json({ error: "Vehículo no encontrado" });
     }
 
-    const resVehiculo = await Vehiculo.findById(vehiculo._id).populate({
+    // Actualiza los campos del vehículo con los datos proporcionados en req.body
+    const updatedVehiculoData = req.body;
+
+    // Actualiza las imágenes y el video si se proporcionan en la solicitud
+    if (req.body.imagen_principal) {
+      const upload_imagen_principal = await uploadImage(
+        vehiculo.nombre,
+        req.body.imagen_principal
+      );
+      updatedVehiculoData.imagen_principal = {
+        public_id: upload_imagen_principal.public_id,
+        url: upload_imagen_principal.secure_url,
+      };
+      // Borra la imagen anterior del vehículo si es necesario
+      deleteImage(vehiculo.imagen_principal.public_id);
+    }
+
+    if (req.body.detalles && req.body.detalles.imagen1) {
+      const upload_imagen1 = await uploadImage(
+        vehiculo.nombre,
+        req.body.detalles.imagen1
+      );
+      updatedVehiculoData.detalles.imagen1 = {
+        public_id: upload_imagen1.public_id,
+        url: upload_imagen1.secure_url,
+      };
+      // Borra la imagen anterior del vehículo si es necesario
+      deleteImage(vehiculo.detalles.imagen1.public_id);
+    } else {
+      updatedVehiculoData.detalles.imagen1 = vehiculo.detalles.imagen1;
+    }
+
+    if (req.body.detalles && req.body.detalles.imagen2) {
+      const upload_imagen2 = await uploadImage(
+        vehiculo.nombre,
+        req.body.detalles.imagen2
+      );
+      updatedVehiculoData.detalles.imagen2 = {
+        public_id: upload_imagen2.public_id,
+        url: upload_imagen2.secure_url,
+      };
+      // Borra la imagen anterior del vehículo si es necesario
+      deleteImage(vehiculo.detalles.imagen2.public_id);
+    } else {
+      updatedVehiculoData.detalles.imagen2 = vehiculo.detalles.imagen2;
+    }
+
+    if (req.body.imagen_especificaciones) {
+      const upload_imagen_especificaciones = await uploadImage(
+        vehiculo.nombre,
+        req.body.imagen_especificaciones
+      );
+      updatedVehiculoData.imagen_especificaciones = {
+        public_id: upload_imagen_especificaciones.public_id,
+        url: upload_imagen_especificaciones.secure_url,
+      };
+      // Borra la imagen anterior del vehículo si es necesario
+      deleteImage(vehiculo.imagen_especificaciones.public_id);
+    }
+
+    if (req.body.video_banner) {
+      const upload_video_banner = await uploadVideo(
+        vehiculo.nombre,
+        req.body.video_banner
+      );
+      updatedVehiculoData.video_banner = {
+        public_id: upload_video_banner.public_id,
+        url: upload_video_banner.secure_url,
+      };
+      // Borra el video anterior del vehículo si es necesario
+      deleteVideo(vehiculo.video_banner.public_id);
+    }
+
+    // Actualiza el vehículo con los nuevos datos
+    const updatedVehiculo = await Vehiculo.findByIdAndUpdate(
+      req.params.id,
+      updatedVehiculoData,
+      { new: true }
+    ).populate({
       path: "modelo",
       populate: {
         path: "marca",
       },
     });
 
-    res.json(resVehiculo);
+    res.json(updatedVehiculo);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -211,4 +287,3 @@ export const updateDestacado = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
