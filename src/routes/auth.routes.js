@@ -5,6 +5,7 @@ import {
 } from "../controllers/auth.controller.js";
 
 import { verifyToken } from "../middlewares/authJwt.js";
+import { checkIsActivo } from "../middlewares/verifySignup.js";
 
 const router = Router();
 
