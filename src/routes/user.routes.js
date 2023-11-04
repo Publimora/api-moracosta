@@ -1,27 +1,19 @@
 import { Router } from "express";
 import {
   createUser,
-  deleteUser,
   getAuthUser,
   getUsers,
+  updateActivo,
   updatePassword,
 } from "../controllers/user.controller.js";
 import { isAdmin, verifyToken } from "../middlewares/authJwt.js";
-import {
-  checkExistingRole,
-  checkExistingUser,
-} from "../middlewares/verifySignup.js";
 
 const router = Router();
 
 router.get("/yo", [verifyToken], getAuthUser);
-router.post(
-  "/",
-  [verifyToken, isAdmin],
-  createUser
-);
+router.post("/", [verifyToken, isAdmin], createUser);
 router.get("/", [verifyToken, isAdmin], getUsers);
-router.delete("/:userId", [verifyToken, isAdmin], deleteUser);
-router.put("/:userId", [verifyToken, isAdmin], updatePassword);
+router.put("/pass/:userId", [verifyToken, isAdmin], updatePassword);
+router.put("/isActivo/:userId", [verifyToken, isAdmin], updateActivo);
 
 export default router;

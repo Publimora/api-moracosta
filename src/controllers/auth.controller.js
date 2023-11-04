@@ -44,7 +44,8 @@ export const signinHandler = async (req, res) => {
       "roles"
     );
 
-    if (!userFound) return res.status(400).json({ message: "User Not Found" });
+    if (!userFound)
+      return res.status(400).json({ message: "Correo incorrecto" });
 
     const matchPassword = await User.comparePassword(
       req.body.password,
@@ -54,8 +55,11 @@ export const signinHandler = async (req, res) => {
     if (!matchPassword)
       return res.status(401).json({
         token: null,
-        message: "Invalid Password",
+        message: "Contraseña incorrecta",
       });
+
+    if (!userFound.isActivo)
+      return res.status(401).json({ message: "Usuario no activo" });
 
     const token = jwt.sign({ id: userFound._id }, SECRET, {
       expiresIn: 24 * 3600000, // 24 hours
@@ -67,6 +71,7 @@ export const signinHandler = async (req, res) => {
       email: userFound.email,
       ciudad: userFound.ciudad,
       roles: userFound.roles,
+      isActivo: userFound.isActivo,
       createdAt: userFound.createdAt,
     };
 

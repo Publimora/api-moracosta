@@ -19,6 +19,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isActivo: {
+      type: Boolean,
+      default: true,
+    },
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,

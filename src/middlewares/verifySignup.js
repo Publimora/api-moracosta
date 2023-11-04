@@ -36,3 +36,12 @@ export const checkExistingRole = (req, res, next) => {
 
   next();
 };
+
+export const checkIsActivo = async (req, res, next) => {
+  const userFound = await User.findById(req.userId);
+
+  if (!userFound.isActivo)
+    return res.status(400).json({ message: "Usuario no activo" });
+
+  next();
+}

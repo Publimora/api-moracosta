@@ -31,6 +31,7 @@ export const createUser = async (req, res) => {
       email: resuser.email,
       ciudad: resuser.ciudad,
       roles: resuser.roles,
+      isActivo: resuser.isActivo,
       createdAt: resuser.createdAt,
     });
   } catch (error) {
@@ -47,6 +48,7 @@ export const getAuthUser = async (req, res) => {
     email: user.email,
     ciudad: user.ciudad,
     roles: user.roles,
+    isActivo: user.isActivo,
     createdAt: user.createdAt,
   });
 };
@@ -59,21 +61,6 @@ export const getUsers = async (req, res) => {
 export const getUser = async (req, res) => {
   const user = await User.findById(req.params.userId);
   return res.json(user);
-};
-
-export const deleteUser = async (req, res) => {
-  const { userId } = req.params;
-
-  const user = await User.findByIdAndDelete(userId);
-
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  res.json({
-    _id: user._id,
-    message: "User was deleted successfully!",
-  });
 };
 
 export const updatePassword = async (req, res) => {
@@ -95,5 +82,23 @@ export const updatePassword = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateActivo = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { isActivo: req.body.isActivo },
+      { new: true }
+    ).populate("roles");
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
