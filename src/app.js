@@ -28,6 +28,7 @@ const corsOptions = {
     "https://web-moracosta.vercel.app",
     "https://moracosta.netlify.app",
     "https://moracosta.com",
+    "https://www.moracosta.com",
   ],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
