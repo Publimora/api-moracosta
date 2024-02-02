@@ -26,7 +26,7 @@ export const createRoles = async () => {
 export const createAdmin = async () => {
   // check for an existing admin user
   const userFound = await User.findOne({ email: ADMIN_EMAIL });
-  console.log(userFound);
+  // console.log(userFound);
   if (userFound) return;
 
   // get roles _id
@@ -43,7 +43,7 @@ export const createAdmin = async () => {
     roles: roles.map((role) => role._id),
   });
 
-  console.log(`new user created: ${newUser.email}`);
+  // console.log(`new user created: ${newUser.email}`);
 };
 
 createRoles();
