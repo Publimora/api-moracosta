@@ -25,6 +25,7 @@ export const obtenerContactos = async (req, res) => {
     const contactos = await Contacto.find().populate("user", {
       password: 0,
     });
+    console.log(contactos);
     res.status(200).json(contactos);
   } catch (error) {
     res.status(400).json({ error: error.message });

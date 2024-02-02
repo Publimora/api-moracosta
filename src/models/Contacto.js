@@ -10,6 +10,7 @@ const contactoSchema = new mongoose.Schema({
   telefono: String,
   direccion: String,
   ciudad: String,
+  agencia: String,
   check: {
     whatsapp: { type: Boolean, default: false },
     llamada: { type: Boolean, default: false },
