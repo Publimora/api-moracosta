@@ -7,6 +7,7 @@ import {
   updateVehiculo,
   updateDestacado,
   updateIsBanner,
+  updateVehiculosOrden,
 } from "../controllers/vehiculo.controller.js";
 
 import {
@@ -20,6 +21,8 @@ const router = Router();
 router.post("/", [verifyToken, isAdminOrModerator], createVehiculo);
 
 router.put("/:id", [verifyToken, isAdminOrModerator], updateVehiculo);
+
+router.post("/updateOrden", [verifyToken, isAdminOrModerator], updateVehiculosOrden);
 
 router.get("/", getVehiculos);
 

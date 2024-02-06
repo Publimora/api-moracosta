@@ -20,6 +20,10 @@ const vehiculoSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    orden: {
+      type: Number,
+      default: 0,
+    },
 
     //detalles del vehiculo
     ficha_tecnica: String,

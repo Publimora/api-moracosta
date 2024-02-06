@@ -9,7 +9,19 @@ import {
 // Crear un vehículo
 export const createVehiculo = async (req, res) => {
   try {
+    // Obtener el vehículo con el orden más alto
+    const vehiculoConOrdenMasAlto = await Vehiculo.findOne().sort({
+      orden: -1,
+    });
+
+    let nuevoOrden = 1;
+
+    if (vehiculoConOrdenMasAlto) {
+      nuevoOrden = vehiculoConOrdenMasAlto.orden + 1;
+    }
+
     let reqvehiculo = req.body;
+    reqvehiculo.orden = nuevoOrden;
 
     const imagen_principal = reqvehiculo.imagen_principal;
     const imagen1 = reqvehiculo.detalles.imagen1;
@@ -81,12 +93,14 @@ export const createVehiculo = async (req, res) => {
 // Obtener todos los vehículos
 export const getVehiculos = async (req, res) => {
   try {
-    const vehiculos = await Vehiculo.find().populate({
-      path: "modelo",
-      populate: {
-        path: "marca",
-      },
-    });
+    const vehiculos = await Vehiculo.find()
+      .sort({ orden: 1 })
+      .populate({
+        path: "modelo",
+        populate: {
+          path: "marca",
+        },
+      });
     res.json(vehiculos);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -283,6 +297,46 @@ export const updateDestacado = async (req, res) => {
     });
 
     res.json(resVehiculo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Actualizar el orden de los vehículos
+export const updateVehiculosOrden = async (req, res) => {
+  try {
+    const vehiculosOrdenados = req.body;
+
+    for (const vehiculoOrdenado of vehiculosOrdenados) {
+      const orden = parseInt(vehiculoOrdenado.orden);
+      if (isNaN(orden)) {
+        return res.status(400).json({
+          error: `El orden '${vehiculoOrdenado.orden}' no es un número válido para el vehículo con ID ${vehiculoOrdenado._id}`,
+        });
+      }
+      const vehiculo = await Vehiculo.findByIdAndUpdate(
+        vehiculoOrdenado._id,
+        { orden: orden },
+        { new: true }
+      );
+
+      if (!vehiculo) {
+        return res.status(404).json({
+          error: `El vehículo con ID ${vehiculoOrdenado._id} no fue encontrado`,
+        });
+      }
+    }
+
+    const vehiculos = await Vehiculo.find()
+      .sort({ orden: 1 })
+      .populate({
+        path: "modelo",
+        populate: {
+          path: "marca",
+        },
+      });
+
+    res.json(vehiculos);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
