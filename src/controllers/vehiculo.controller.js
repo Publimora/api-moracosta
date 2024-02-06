@@ -93,12 +93,14 @@ export const createVehiculo = async (req, res) => {
 // Obtener todos los vehículos
 export const getVehiculos = async (req, res) => {
   try {
-    const vehiculos = await Vehiculo.find().sort({ orden: 1 }).populate({
-      path: "modelo",
-      populate: {
-        path: "marca",
-      },
-    });
+    const vehiculos = await Vehiculo.find()
+      .sort({ orden: 1 })
+      .populate({
+        path: "modelo",
+        populate: {
+          path: "marca",
+        },
+      });
     res.json(vehiculos);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -324,9 +326,17 @@ export const updateVehiculosOrden = async (req, res) => {
         });
       }
     }
-    res.json({
-      message: "El orden de los vehículos se ha actualizado correctamente",
-    });
+
+    const vehiculos = await Vehiculo.find()
+      .sort({ orden: 1 })
+      .populate({
+        path: "modelo",
+        populate: {
+          path: "marca",
+        },
+      });
+
+    res.json(vehiculos);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
