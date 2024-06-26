@@ -9,6 +9,10 @@
     "start": "node index.js",
     "test": "jest"
   },
+  "engines": {
+    "node": "20.13.1",
+    "npm": "10.5.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dev-gaspar/api.git"
